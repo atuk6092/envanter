@@ -231,11 +231,16 @@ body.dark .rol-admin{background:#14432a;color:#86efac}
 body.dark .rol-teknik{background:#272456;color:#818cf8}
 body.dark .rol-izleyici{background:#3f3015;color:#fbbf24}
 body.dark .pasif-badge{background:#4a1f2b;color:#fb7185}
-body.dark tbody tr:nth-child(odd){background:#241f33}
-body.dark tbody tr:nth-child(even){background:#2c2640}
-body.dark tbody tr:hover{background:#3a3354 !important}
-body.dark table td{color:var(--tx)}
-body.dark thead th{background:#1a1625;color:var(--tx2)}
+body.dark .bh-d{background:#2f2942;color:var(--tx2)}
+body.dark .lt thead th{background:#1a1625;color:var(--tx2)}
+body.dark .tw{background:transparent}
+body.dark table tbody tr:nth-child(odd){background:#241f33 !important}
+body.dark table tbody tr:nth-child(even){background:#2c2640 !important}
+body.dark table tbody tr:hover{background:#3a3354 !important}
+body.dark table tbody td{color:var(--tx) !important}
+body.dark table thead th{background:#1a1625 !important;color:var(--tx2) !important}
+body.dark table tbody td[style*="--tx2"]{color:#9d96b3 !important}
+body.dark table tbody td[style*="--tx3"]{color:#8b84a0 !important}
 body.dark .lg-box{background:#1f2127}
 body.dark .lg-box div,body.dark .lg-box label{color:#d8d8d4}
 body.dark .lg-input,body.dark .lg-pw input{background:#262931;border-color:#3a3d45;color:#e8e8e4}
@@ -336,6 +341,7 @@ tr.blink-say{animation:blinkSay .6s ease-in-out 4}
   <div class="sb-a" onclick="triggerImport()">📥 Excel'den Aktar</div>
   <div class="sb-a" onclick="yedekle()">💾 Yedek Al (JSON)</div>
   <div class="sb-a" onclick="geriYukle()">🔁 Yedeği Geri Yükle</div>
+  <div class="sb-a" onclick="talepAc()">📝 Malzeme Talep Listesi</div>
   <div class="sb-a" onclick="tanitimAc()">ℹ️ Program Tanıtımı</div>
   <div class="sb-foot" id="db-stat">Yükleniyor...</div>
 </aside>
@@ -349,7 +355,6 @@ tr.blink-say{animation:blinkSay .6s ease-in-out 4}
     <div id="tu-wrap"></div>
     <div class="topbar-acts">
       <button class="btn" onclick="sbYenile()" title="Buluttan guncel verileri cek">🔄 Yenile</button>
-      <button class="btn btn-xl" onclick="exportExcel()">📊 Excel</button>
       <button class="btn btn-p" id="btn-yeni" onclick="openUrunModal()">+ Yeni Ürün</button>
     </div>
   </div>
@@ -421,7 +426,7 @@ tr.blink-say{animation:blinkSay .6s ease-in-out 4}
         <button class="btn btn-p" onclick="openHarModal(null)">+ Yeni Hareket</button>
       </div>
       <div class="tw">
-        <table class="lt">
+        <table>
           <thead><tr>
             <th>TARİH</th><th>ÜRÜN</th><th>DOLAP / BÖLME</th>
             <th>TİP</th><th style="text-align:right">MİKTAR</th>
@@ -654,6 +659,61 @@ tr.blink-say{animation:blinkSay .6s ease-in-out 4}
     <p>5-6 kişi aynı anda çalışabilir. Her işlem buluta anında kaydedilir ve diğer ekranlar ~1 saniye içinde otomatik güncellenir. 🔄 Yenile butonu ile elle de güncelleyebilirsiniz.</p>
   </div>
   <div class="mf"><button class="btn btn-p" onclick="CM('m-tanitim')">Kapat</button></div>
+</div></div>
+
+<div class="ov" id="m-talep" style="z-index:8000"><div class="modal" style="max-width:780px">
+  <div class="mh"><h3>📝 Malzeme Talep Listesi</h3><button class="mx" onclick="CM('m-talep')">&#215;</button></div>
+  <div class="mb" style="max-height:70vh;overflow-y:auto">
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:flex-end">
+      <div style="flex:1;min-width:160px"><label style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--tx3);display:block;margin-bottom:4px">Talep Eden</label>
+        <input id="tlp-eden" placeholder="Ad Soyad" style="width:100%;height:36px;padding:0 11px;border:1px solid var(--brd);border-radius:var(--rsm);font-size:14px;font-family:inherit;outline:none;background:var(--sur)"></div>
+      <div style="flex:1;min-width:160px"><label style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--tx3);display:block;margin-bottom:4px">Departman / Birim</label>
+        <input id="tlp-dep" placeholder="Ör: IT Departmanı" style="width:100%;height:36px;padding:0 11px;border:1px solid var(--brd);border-radius:var(--rsm);font-size:14px;font-family:inherit;outline:none;background:var(--sur)"></div>
+      <div style="min-width:140px"><label style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--tx3);display:block;margin-bottom:4px">Tarih</label>
+        <input id="tlp-tar" type="date" style="width:100%;height:36px;padding:0 11px;border:1px solid var(--brd);border-radius:var(--rsm);font-size:14px;font-family:inherit;outline:none;background:var(--sur)"></div>
+    </div>
+
+    <div style="background:var(--sur2);border:1px solid var(--brd);border-radius:var(--r);padding:12px;margin-bottom:14px">
+      <div style="font-weight:700;font-size:13px;margin-bottom:9px">Malzeme Ekle</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end">
+        <div style="flex:2;min-width:180px"><label style="font-size:11px;color:var(--tx3);display:block;margin-bottom:3px">Stoktan Seç</label>
+          <select id="tlp-sec" onchange="talepStokSec()" style="width:100%;height:34px;padding:0 9px;border:1px solid var(--brd);border-radius:var(--rsm);font-size:13px;font-family:inherit;background:var(--sur)">
+            <option value="">— Stoktan ürün seç —</option>
+          </select></div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-top:9px">
+        <div style="flex:2;min-width:160px"><label style="font-size:11px;color:var(--tx3);display:block;margin-bottom:3px">Malzeme Adı ve Özellikleri</label>
+          <input id="tlp-ad" placeholder="Malzeme adı / özellik" style="width:100%;height:34px;padding:0 9px;border:1px solid var(--brd);border-radius:var(--rsm);font-size:13px;font-family:inherit;outline:none;background:var(--sur)"></div>
+        <div style="width:90px"><label style="font-size:11px;color:var(--tx3);display:block;margin-bottom:3px">Miktar</label>
+          <input id="tlp-mik" type="number" min="1" value="1" style="width:100%;height:34px;padding:0 9px;border:1px solid var(--brd);border-radius:var(--rsm);font-size:13px;font-family:inherit;outline:none;background:var(--sur)"></div>
+        <div style="width:110px"><label style="font-size:11px;color:var(--tx3);display:block;margin-bottom:3px">Birim</label>
+          <select id="tlp-birim" style="width:100%;height:34px;padding:0 6px;border:1px solid var(--brd);border-radius:var(--rsm);font-size:13px;font-family:inherit;background:var(--sur)">
+            <option>Adet</option><option>Paket</option><option>Kutu</option><option>Metre</option><option>Kilo</option><option>Litre</option><option>Top</option><option>Rulo</option><option>Çift</option><option>Takım</option>
+          </select></div>
+        <button class="btn btn-p" onclick="talepEkle()" style="height:34px">+ Ekle</button>
+      </div>
+    </div>
+
+    <table style="margin-bottom:8px">
+      <thead><tr>
+        <th style="width:50px;text-align:center">SIRA</th>
+        <th>MALZEME ADI VE ÖZELLİKLERİ</th>
+        <th style="width:90px;text-align:right">MİKTAR</th>
+        <th style="width:100px">BİRİM</th>
+        <th style="width:60px;text-align:center">SİL</th>
+      </tr></thead>
+      <tbody id="tlp-tbody"></tbody>
+    </table>
+    <div id="tlp-bos" style="text-align:center;color:var(--tx3);padding:24px;font-size:13px">Henüz malzeme eklenmedi. Yukarıdan ekleyin.</div>
+  </div>
+  <div class="mf" style="justify-content:space-between">
+    <button class="btn" onclick="talepTemizle()">🗑 Listeyi Temizle</button>
+    <div style="display:flex;gap:8px">
+      <button class="btn" onclick="CM('m-talep')">Kapat</button>
+      <button class="btn" onclick="talepExcel()">📊 Excel Oluştur</button>
+      <button class="btn btn-p" onclick="talepPdf()">📄 PDF Oluştur</button>
+    </div>
+  </div>
 </div></div>
 
 <!-- KONFIRM -->
@@ -1731,6 +1791,152 @@ function temaDegistir(){
   try{localStorage.setItem('inv_tema',dark?'dark':'light');}catch(ex){}
   var b=document.getElementById('tema-btn');if(b)b.textContent=dark?'☀️':'🌙';
 }
+
+/* === MALZEME TALEP LISTESI === */
+var talepListe=[];
+function talepAc(){
+  /* Stok dropdown doldur */
+  var sel=document.getElementById('tlp-sec');
+  var opts='<option value="">— Stoktan ürün seç —</option>';
+  var sirali=db.urunler.slice().sort(function(a,b){return (a.ad||'').localeCompare(b.ad||'','tr');});
+  for(var i=0;i<sirali.length;i++){
+    var u=sirali[i];
+    opts+='<option value="'+u.id+'">'+e(u.ad)+(u.marka?' ('+e(u.marka)+')':'')+'</option>';
+  }
+  sel.innerHTML=opts;
+  /* Tarih bugün */
+  var t=document.getElementById('tlp-tar');
+  if(!t.value){var d=new Date();t.value=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+  /* Talep eden = giriş yapan */
+  var ed=document.getElementById('tlp-eden');
+  if(!ed.value&&ME)ed.value=ME.ad;
+  talepRender();
+  OM('m-talep');
+}
+function talepStokSec(){
+  var id=parseInt(document.getElementById('tlp-sec').value);
+  if(!id)return;
+  var u=null; for(var i=0;i<db.urunler.length;i++){if(db.urunler[i].id===id){u=db.urunler[i];break;}}
+  if(u){
+    document.getElementById('tlp-ad').value=u.ad+(u.marka?' - '+u.marka:'');
+    var bsel=document.getElementById('tlp-birim');
+    /* birim eşleştir */
+    for(var k=0;k<bsel.options.length;k++){if(bsel.options[k].value===u.birim){bsel.selectedIndex=k;break;}}
+    document.getElementById('tlp-mik').focus();
+  }
+}
+function talepEkle(){
+  var ad=document.getElementById('tlp-ad').value.trim();
+  var mik=parseInt(document.getElementById('tlp-mik').value)||1;
+  var birim=document.getElementById('tlp-birim').value;
+  if(!ad){toast('Malzeme adı girin!');return;}
+  talepListe.push({ad:ad,mik:mik,birim:birim});
+  document.getElementById('tlp-ad').value='';
+  document.getElementById('tlp-mik').value='1';
+  document.getElementById('tlp-sec').value='';
+  talepRender();
+  document.getElementById('tlp-ad').focus();
+}
+function talepSil(idx){
+  talepListe.splice(idx,1);
+  talepRender();
+}
+function talepTemizle(){
+  if(talepListe.length===0)return;
+  if(!confirm('Tüm liste silinecek. Emin misiniz?'))return;
+  talepListe=[];
+  talepRender();
+}
+function talepRender(){
+  var tb=document.getElementById('tlp-tbody');
+  var bos=document.getElementById('tlp-bos');
+  if(talepListe.length===0){tb.innerHTML='';bos.style.display='block';return;}
+  bos.style.display='none';
+  var h='';
+  for(var i=0;i<talepListe.length;i++){
+    var t=talepListe[i];
+    h+='<tr>'
+      +'<td style="text-align:center;font-weight:700;color:var(--tx3)">'+(i+1)+'</td>'
+      +'<td style="font-weight:600">'+e(t.ad)+'</td>'
+      +'<td style="text-align:right;font-weight:700">'+t.mik+'</td>'
+      +'<td>'+e(t.birim)+'</td>'
+      +'<td style="text-align:center"><button class="btn btn-sm btn-del" onclick="talepSil('+i+')">Sil</button></td>'
+      +'</tr>';
+  }
+  tb.innerHTML=h;
+}
+function talepPdf(){
+  if(talepListe.length===0){toast('Listeye en az bir malzeme ekleyin!');return;}
+  var eden=document.getElementById('tlp-eden').value.trim()||'—';
+  var dep=document.getElementById('tlp-dep').value.trim()||'—';
+  var tar=document.getElementById('tlp-tar').value||'';
+  var tarStr=tar?new Date(tar).toLocaleDateString('tr-TR'):new Date().toLocaleDateString('tr-TR');
+  /* Yazdırılabilir HTML penceresi aç */
+  var satirlar='';
+  for(var i=0;i<talepListe.length;i++){
+    var t=talepListe[i];
+    satirlar+='<tr><td style="text-align:center">'+(i+1)+'</td><td>'+escTalep(t.ad)+'</td><td style="text-align:center">'+t.mik+'</td><td style="text-align:center">'+escTalep(t.birim)+'</td></tr>';
+  }
+  var w=window.open('','_blank');
+  var doc='<!DOCTYPE html><html lang="tr"><head><meta charset="UTF-8"><title>Malzeme Talep Listesi</title>'
+    +'<style>'
+    +'body{font-family:Arial,Helvetica,sans-serif;padding:36px;color:#1a1a18}'
+    +'h1{text-align:center;font-size:21px;margin:0 0 4px;letter-spacing:.5px}'
+    +'.alt{text-align:center;font-size:12px;color:#777;margin-bottom:24px}'
+    +'.bilgi{display:flex;justify-content:space-between;font-size:13px;margin-bottom:18px;border:1px solid #ccc;border-radius:6px;padding:12px 16px;background:#f8f8f6}'
+    +'.bilgi div{line-height:1.7}'
+    +'table{width:100%;border-collapse:collapse;font-size:13px}'
+    +'th{background:#0b7a52;color:#fff;padding:9px 10px;text-align:left;font-size:12px}'
+    +'th:first-child,td:first-child{text-align:center;width:50px}'
+    +'td{padding:8px 10px;border-bottom:1px solid #e0e0dc}'
+    +'tr:nth-child(even) td{background:#f5f5f3}'
+    +'.imza{margin-top:48px;display:flex;justify-content:space-between;font-size:13px}'
+    +'.imza div{text-align:center;width:42%}'
+    +'.imza .cizgi{border-top:1px solid #888;margin-bottom:6px;padding-top:48px}'
+    +'.foot{margin-top:30px;text-align:center;font-size:10.5px;color:#aaa}'
+    +'@media print{body{padding:18px}}'
+    +'</style></head><body>'
+    +'<h1>MALZEME TALEP LİSTESİ</h1>'
+    +'<div class="alt">Teknik Envanter Stok Takip Sistemi</div>'
+    +'<div class="bilgi"><div><b>Talep Eden:</b> '+escTalep(eden)+'<br><b>Departman/Birim:</b> '+escTalep(dep)+'</div>'
+    +'<div style="text-align:right"><b>Tarih:</b> '+tarStr+'<br><b>Toplam Kalem:</b> '+talepListe.length+'</div></div>'
+    +'<table><thead><tr><th>Sıra</th><th>Malzeme Adı ve Özellikleri</th><th style="text-align:center">Miktar</th><th style="text-align:center">Birim</th></tr></thead>'
+    +'<tbody>'+satirlar+'</tbody></table>'
+    +'<div class="imza"><div><div class="cizgi"></div>Talep Eden</div><div><div class="cizgi"></div>Onaylayan</div></div>'
+    +'<div class="foot">Bu belge Teknik Envanter programı ile '+new Date().toLocaleString('tr-TR')+' tarihinde oluşturulmuştur.</div>'
+    +'</body></html>';
+  w.document.write(doc);
+  w.document.close();
+  setTimeout(function(){w.print();},400);
+}
+
+function talepExcel(){
+  if(talepListe.length===0){toast('Listeye en az bir malzeme ekleyin!');return;}
+  if(typeof XLSX==='undefined'){toast('Excel kütüphanesi yüklenemedi!');return;}
+  var eden=document.getElementById('tlp-eden').value.trim()||'—';
+  var dep=document.getElementById('tlp-dep').value.trim()||'—';
+  var tar=document.getElementById('tlp-tar').value||'';
+  var tarStr=tar?new Date(tar).toLocaleDateString('tr-TR'):new Date().toLocaleDateString('tr-TR');
+  var aoa=[];
+  aoa.push(['MALZEME TALEP LİSTESİ']);
+  aoa.push(['Talep Eden:',eden,'','Tarih:',tarStr]);
+  aoa.push(['Departman/Birim:',dep,'','Toplam Kalem:',talepListe.length]);
+  aoa.push([]);
+  aoa.push(['Sıra','Malzeme Adı ve Özellikleri','Miktar','Birim']);
+  for(var i=0;i<talepListe.length;i++){
+    var t=talepListe[i];
+    aoa.push([i+1,t.ad,t.mik,t.birim]);
+  }
+  var ws=XLSX.utils.aoa_to_sheet(aoa);
+  ws['!cols']=[{wch:6},{wch:48},{wch:10},{wch:12}];
+  var wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,'Talep Listesi');
+  var dosyaAdi='Malzeme_Talep_'+(tar||new Date().toISOString().slice(0,10))+'.xlsx';
+  XLSX.writeFile(wb,dosyaAdi);
+  toast('Excel oluşturuldu');
+}
+
+function escTalep(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
 function tanitimAc(){OM('m-tanitim');}
 
