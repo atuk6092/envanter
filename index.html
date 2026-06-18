@@ -294,41 +294,12 @@ tr.blink-say td{animation:blinkSay .6s ease-in-out 4!important}
       <button type="button" onclick="var i=document.getElementById('lg-p');i.type=i.type==='password'?'text':'password';this.textContent=i.type==='password'?'Goster':'Gizle'">Goster</button>
     </div>
     <button class="lg-btn" onclick="lgGiris()">Giris Yap</button>
-    <button class="lg-btn2" onclick="lgKayitAc()">Hesap Olustur / Kayit Ol</button>
     <div style="text-align:center;margin-top:14px">
       <button onclick="tanitimAc()" style="background:none;border:none;color:#999;font-size:12.5px;cursor:pointer;text-decoration:underline;font-family:inherit">ℹ️ Program Tanıtımı</button>
     </div>
   </div>
 </div>
-<div id="kayit-screen" style="position:fixed;inset:0;background:linear-gradient(135deg,#0b7a52,#1255a0);display:none;align-items:center;justify-content:center;z-index:9000;overflow-y:auto;padding:20px 0">
-  <div class="lg-box">
-    <div style="text-align:center;margin-bottom:20px">
-      <div style="font-size:36px">&#128101;</div>
-      <div style="font-size:18px;font-weight:800;margin-top:6px;color:#1a1a18">Yeni Hesap Olustur</div>
-    </div>
-    <div class="lg-err" id="kayit-err"></div>
-    <div style="margin-bottom:11px">
-      <label class="lg-label">Kullanici Adi * <span style="font-weight:400;color:#888">(kucuk harf)</span></label>
-      <input id="kayit-id" class="lg-input" type="text" autocomplete="off" placeholder="ornek: ahmet.yilmaz" onkeydown="if(event.key==='Enter')document.getElementById('kayit-em').focus()">
-    </div>
-    <div style="margin-bottom:11px">
-      <label class="lg-label">E-posta <span style="font-weight:400;color:#888">(opsiyonel)</span></label>
-      <input id="kayit-em" class="lg-input" type="email" autocomplete="off" placeholder="ornek@mail.com" onkeydown="if(event.key==='Enter')document.getElementById('kayit-s1').focus()">
-    </div>
-    <div class="lg-pw">
-      <label class="lg-label">Sifre *</label>
-      <input id="kayit-s1" type="password" autocomplete="new-password" placeholder="En az 4 karakter" onkeydown="if(event.key==='Enter')document.getElementById('kayit-s2').focus()">
-      <button type="button" onclick="var i=document.getElementById('kayit-s1');i.type=i.type==='password'?'text':'password';this.textContent=i.type==='password'?'Goster':'Gizle'">Goster</button>
-    </div>
-    <div class="lg-pw">
-      <label class="lg-label">Sifre Tekrar *</label>
-      <input id="kayit-s2" type="password" autocomplete="new-password" placeholder="Sifreyi tekrar girin" onkeydown="if(event.key==='Enter')lgKayitOl()">
-      <button type="button" onclick="var i=document.getElementById('kayit-s2');i.type=i.type==='password'?'text':'password';this.textContent=i.type==='password'?'Goster':'Gizle'">Goster</button>
-    </div>
-    <button class="lg-btn" onclick="lgKayitOl()">Kayit Ol</button>
-    <button class="lg-btn2" onclick="lgGirisGeri()">Girise Don</button>
-  </div>
-</div>
+
 
 <div class="app" id="main-app" style="display:none">
 <aside class="sb">
@@ -909,43 +880,6 @@ function lgGiris(){
   if(usr.aktif===false){err.textContent='Bu hesap pasif. Yoneticiye basvurun.';err.style.display='block';document.getElementById('lg-p').value='';return;}
   if(usr.pw!==p){err.textContent='Sifre hatali!';err.style.display='block';document.getElementById('lg-p').value='';return;}
   lgAc(usr);
-}
-function lgKayitAc(){
-  document.getElementById('lg-screen').style.display='none';
-  document.getElementById('kayit-screen').style.display='flex';
-  document.getElementById('kayit-err').style.display='none';
-  ['kayit-id','kayit-em','kayit-s1','kayit-s2'].forEach(function(x){document.getElementById(x).value='';});
-  setTimeout(function(){document.getElementById('kayit-id').focus();},80);
-}
-function lgGirisGeri(){
-  document.getElementById('kayit-screen').style.display='none';
-  document.getElementById('lg-screen').style.display='flex';
-}
-function lgKayitOl(){
-  var uid=(document.getElementById('kayit-id').value||'').trim().toLowerCase().replace(/[^a-z0-9_.]/g,'');
-  var ad=uid;
-  var em=(document.getElementById('kayit-em').value||'').trim();
-  var s1=document.getElementById('kayit-s1').value;
-  var s2=document.getElementById('kayit-s2').value;
-  var err=document.getElementById('kayit-err');
-  err.style.display='none'; err.textContent='';
-  if(!uid){err.textContent='Kullanici adi zorunlu!';err.style.display='block';return;}
-  for(var j=0;j<KU.length;j++){if(KU[j].id===uid){err.textContent='Bu kullanici adi zaten kullaniliyor!';err.style.display='block';return;}}
-  if(!s1||s1.length<4){err.textContent='Sifre en az 4 karakter olmali!';err.style.display='block';return;}
-  if(s1!==s2){err.textContent='Sifreler eslesmIyor!';err.style.display='block';return;}
-  var renkler=['#0b7a52','#1255a0','#9a5e08','#b83030','#5e35b1','#1a7a8a'];
-  var renk=renkler[KU.length%renkler.length];
-  KU.push({id:uid,ad:ad,pw:s1,rol:'teknik',renk:renk,aktif:true,em:em});
-  uKaydet();
-  sbKullaniciKaydet(uid);
-  document.getElementById('kayit-screen').style.display='none';
-  document.getElementById('lg-screen').style.display='flex';
-  document.getElementById('lg-u').value=uid;
-  document.getElementById('lg-p').value='';
-  document.getElementById('lg-err').style.display='none';
-  var ok=document.getElementById('lg-ok');
-  if(ok){ok.textContent='Hesabiniz olusturuldu! Simdi giris yapabilirsiniz.';ok.style.display='block';}
-  setTimeout(function(){document.getElementById('lg-p').focus();},100);
 }
 function lgAc(usr){
   ME=usr;
