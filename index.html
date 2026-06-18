@@ -1377,7 +1377,6 @@ function renderStok(){
     const d=durum(u);const k=kalan(u);const sel=secilenler.has(u.id);
     return '<tr data-id="'+u.id+'">'+
       '<td><input type="checkbox"'+(sel?' checked':'')+' onclick="toggleRow('+u.id+',this)"></td>'+
-      '<td style="font-size:11.5px;font-weight:700;color:var(--blu);white-space:nowrap">'+e(u.kod||'—')+'</td>'+
       '<td><div style="font-weight:600;font-size:13.5px">'+e(u.ad)+'</div>'+(u.sku?'<div style="font-size:11px;color:var(--tx3)">'+e(u.sku)+'</div>':'')+'</td>'+
       '<td style="color:var(--tx2);font-size:12.5px">'+e(u.marka||'—')+'</td>'+
       '<td style="font-size:13px">'+e(u.birim)+'</td>'+
@@ -1599,9 +1598,8 @@ function saveUrun(){
   } else {
     const sira=dolapAd?nextSiraForDolap(dolapAd):1;
     kayitId=db.nextId++;
-    data.kod=urunKoduUret();
     db.urunler.push({id:kayitId,sira_dolap:sira,...data});
-    logEkle('urun-ekle','Yeni ürün eklendi: '+data.ad+' ('+data.kod+')');
+    logEkle('urun-ekle','Yeni ürün eklendi: '+data.ad);
     toast('✅ Ürün eklendi');
   }
   try{localStorage.setItem(DB_KEY,JSON.stringify(db));updDBInfo();}catch(e){}
@@ -2043,12 +2041,12 @@ function raporGoster(tip){
     bas.textContent='🔴 Tükenen Ürünler';
     var liste=db.urunler.filter(function(u){return durum(u).k==='out';});
     alt.textContent=liste.length+' ürün stokta tükenmiş durumda';
-    h=raporTablo(liste,['kod','ad','dolap','bolme','kalan']);
+    h=raporTablo(liste,['ad','dolap','bolme','kalan']);
   } else if(tip==='kritik'){
     bas.textContent='🟡 Kritik Seviyedeki Ürünler';
     var liste=db.urunler.filter(function(u){return durum(u).k==='low';});
     alt.textContent=liste.length+' ürün kritik seviyede (minimum eşiğin altında)';
-    h=raporTablo(liste,['kod','ad','kalan','min','dolap']);
+    h=raporTablo(liste,['ad','kalan','min','dolap']);
   } else if(tip==='cokkullanilan'){
     bas.textContent='📊 En Çok Kullanılan Ürünler';
     alt.textContent='Çıkış hareketlerine göre sıralı (toplam çıkan miktar)';
@@ -2059,10 +2057,10 @@ function raporGoster(tip){
     var arr=[];
     db.urunler.forEach(function(u){if(say[u.id])arr.push({u:u,toplam:say[u.id]});});
     arr.sort(function(a,b){return b.toplam-a.toplam;});
-    h='<table class="rt"><thead><tr><th>Kod</th><th>Ürün</th><th>Dolap</th><th style="text-align:right">Toplam Çıkan</th></tr></thead><tbody>';
-    if(arr.length===0)h+='<tr><td colspan="4" style="text-align:center;color:var(--tx3);padding:20px">Henüz çıkış hareketi yok</td></tr>';
+    h='<table class="rt"><thead><tr><th>Ürün</th><th>Dolap</th><th style="text-align:right">Toplam Çıkan</th></tr></thead><tbody>';
+    if(arr.length===0)h+='<tr><td colspan="3" style="text-align:center;color:var(--tx3);padding:20px">Henüz çıkış hareketi yok</td></tr>';
     for(var i=0;i<arr.length;i++){
-      h+='<tr><td style="color:var(--blu);font-weight:600">'+e(arr[i].u.kod||'—')+'</td><td>'+e(arr[i].u.ad)+'</td><td style="color:var(--tx2)">'+e(arr[i].u.dolap||'—')+'</td><td style="text-align:right;font-weight:700">'+arr[i].toplam+' '+e(arr[i].u.birim||'')+'</td></tr>';
+      h+='<tr><td>'+e(arr[i].u.ad)+'</td><td style="color:var(--tx2)">'+e(arr[i].u.dolap||'—')+'</td><td style="text-align:right;font-weight:700">'+arr[i].toplam+' '+e(arr[i].u.birim||'')+'</td></tr>';
     }
     h+='</tbody></table>';
   } else if(tip==='dolap'){
@@ -2137,15 +2135,15 @@ function raporVeriAl(){
   var t=aktifRapor;
   if(t==='tukenen'||t==='kritik'){
     var liste=db.urunler.filter(function(u){return durum(u).k===(t==='tukenen'?'out':'low');});
-    var rows=[['Kod','Ürün Adı','Kalan','Min','Dolap','Bölme']];
-    liste.forEach(function(u){rows.push([u.kod||'',u.ad,kalan(u),u.min||0,u.dolap||'',u.bolme||'']);});
+    var rows=[['Ürün Adı','Kalan','Min','Dolap','Bölme']];
+    liste.forEach(function(u){rows.push([u.ad,kalan(u),u.min||0,u.dolap||'',u.bolme||'']);});
     return rows;
   } else if(t==='cokkullanilan'){
     var say={}; db.hareketler.forEach(function(hr){if(hr.tip==='cikan')say[hr.urunId]=(say[hr.urunId]||0)+hr.miktar;});
     var arr=[]; db.urunler.forEach(function(u){if(say[u.id])arr.push({u:u,t:say[u.id]});});
     arr.sort(function(a,b){return b.t-a.t;});
-    var rows=[['Kod','Ürün Adı','Dolap','Toplam Çıkan','Birim']];
-    arr.forEach(function(x){rows.push([x.u.kod||'',x.u.ad,x.u.dolap||'',x.t,x.u.birim||'']);});
+    var rows=[['Ürün Adı','Dolap','Toplam Çıkan','Birim']];
+    arr.forEach(function(x){rows.push([x.u.ad,x.u.dolap||'',x.t,x.u.birim||'']);});
     return rows;
   } else if(t==='dolap'||t==='kategori'){
     var alan=t==='dolap'?'dolap':'kat';
@@ -2281,7 +2279,6 @@ var loadOv=document.getElementById('sb-loading');
 if(loadOv) loadOv.style.display='flex';
 sbBaslat(function(){
   initSiraDolap();
-  tumUrunKoduAta();
   logYukleBulut();
   if(loadOv) loadOv.style.display='none';
   sbRealtimeBaslat();
