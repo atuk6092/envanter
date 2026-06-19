@@ -259,9 +259,9 @@ body.dark tr.blink-out td{animation:blinkOutDark .6s ease-in-out 4!important}
 tr.blink-low td{animation:blinkLow .6s ease-in-out 4!important}
 tr.blink-say td{animation:blinkSay .6s ease-in-out 4!important}
 
-.rt{width:100%;border-collapse:collapse;font-size:13px}
-.rt th{background:var(--sur2);color:var(--tx2);padding:8px 10px;text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:.03em;border-bottom:2px solid var(--brd)}
-.rt td{padding:8px 10px;border-bottom:1px solid var(--brd)}
+.rt{width:100%;border-collapse:collapse;font-size:14px}
+.rt th{background:var(--sur2);color:var(--tx2);padding:11px 13px;text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.03em;border-bottom:2px solid var(--brd)}
+.rt td{padding:11px 13px;border-bottom:1px solid var(--brd)}
 .rt tbody tr:hover{background:var(--sur2)}
 body.dark .rt th{background:#1a1625;color:var(--tx2)}
 body.dark .rt td{color:var(--tx)}
@@ -353,6 +353,7 @@ body.dark .rt td{color:var(--tx)}
       </div>
       <div class="bulk-bar" id="bulk-bar">
         <span id="bulk-info">0 ürün seçildi</span>
+        <button class="btn btn-p" onclick="topluGuncelleAc()">✏️ Toplu Güncelle</button>
         <button class="btn btn-del" onclick="bulkSil()">🗑 Seçilenleri Sil</button>
         <button class="btn" onclick="secimIptal()">✕ İptal</button>
       </div>
@@ -620,9 +621,9 @@ body.dark .rt td{color:var(--tx)}
   </div>
   <div class="mf"><button class="btn" onclick="CM('m-sd')">Iptal</button><button class="btn btn-p" onclick="saveSD()">Guncelle</button></div>
 </div></div>
-<div class="ov" id="m-tanitim" style="z-index:9500"><div class="modal" style="max-width:560px">
+<div class="ov" id="m-tanitim" style="z-index:9500"><div class="modal" style="max-width:760px;width:94vw">
   <div class="mh"><h3>ℹ️ Teknik Envanter — Program Tanıtımı</h3><button class="mx" onclick="CM('m-tanitim')">&#215;</button></div>
-  <div class="mb" style="font-size:13.5px;line-height:1.75;max-height:65vh;overflow-y:auto">
+  <div class="mb" style="font-size:15px;line-height:1.85;max-height:78vh;overflow-y:auto">
     <p style="margin-bottom:12px"><b>Teknik Envanter</b>, ekibinizin malzeme stoklarını ortak bulut veritabanında takip etmesini sağlar. Tüm kullanıcılar aynı verileri görür; bir kişinin yaptığı değişiklik diğer ekranlara otomatik yansır.</p>
     <div style="font-weight:700;margin:14px 0 6px">📋 Ürün Listesi</div>
     <p>Tüm malzemeler dolap sırasına göre listelenir. Arama kutusu, dolap, bölme, kategori ve durum filtreleriyle hızlıca ürün bulursunuz. <b>+ Yeni Ürün</b> ile ekleme, satırdaki butonlarla düzenleme, taşıma ve silme yapılır.</p>
@@ -644,9 +645,9 @@ body.dark .rt td{color:var(--tx)}
   <div class="mf"><button class="btn btn-p" onclick="CM('m-tanitim')">Kapat</button></div>
 </div></div>
 
-<div class="ov" id="m-talep" style="z-index:8000"><div class="modal" style="max-width:780px">
+<div class="ov" id="m-talep" style="z-index:8000"><div class="modal" style="max-width:1000px;width:94vw">
   <div class="mh"><h3>📝 Malzeme Talep Listesi</h3><button class="mx" onclick="CM('m-talep')">&#215;</button></div>
-  <div class="mb" style="max-height:70vh;overflow-y:auto">
+  <div class="mb" style="max-height:80vh;min-height:58vh;overflow-y:auto">
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:flex-end">
       <div style="flex:1;min-width:160px"><label style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--tx3);display:block;margin-bottom:4px">Talep Eden</label>
         <input id="tlp-eden" placeholder="Ad Soyad" style="width:100%;height:36px;padding:0 11px;border:1px solid var(--brd);border-radius:var(--rsm);font-size:14px;font-family:inherit;outline:none;background:var(--sur)"></div>
@@ -699,18 +700,29 @@ body.dark .rt td{color:var(--tx)}
   </div>
 </div></div>
 
-<div class="ov" id="m-rapor" style="z-index:8000"><div class="modal" style="max-width:820px">
+<div class="ov" id="m-rapor" style="z-index:8000"><div class="modal" style="max-width:1100px;width:94vw">
   <div class="mh"><h3>📈 Raporlar</h3><button class="mx" onclick="CM('m-rapor')">&#215;</button></div>
-  <div class="mb" style="max-height:72vh;overflow-y:auto">
+  <div class="mb" style="max-height:80vh;min-height:60vh;overflow-y:auto">
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
       <button class="btn rapor-tab btn-p" data-r="tukenen" onclick="raporGoster('tukenen')">🔴 Tükenenler</button>
       <button class="btn rapor-tab" data-r="kritik" onclick="raporGoster('kritik')">🟡 Kritik Seviye</button>
       <button class="btn rapor-tab" data-r="cokkullanilan" onclick="raporGoster('cokkullanilan')">📊 En Çok Kullanılan</button>
       <button class="btn rapor-tab" data-r="dolap" onclick="raporGoster('dolap')">🗄 Dolap Dağılımı</button>
       <button class="btn rapor-tab" data-r="kategori" onclick="raporGoster('kategori')">🏷 Kategori Dağılımı</button>
+      <button class="btn rapor-tab" data-r="donemsel" onclick="raporGoster('donemsel')">📅 Dönemsel Hareket</button>
       <button class="btn rapor-tab" data-r="ozet" onclick="raporGoster('ozet')">📋 Genel Özet</button>
     </div>
-    <div id="rapor-baslik" style="font-weight:700;font-size:15px;margin-bottom:4px"></div>
+    <div id="rapor-tarih-secici" style="display:none;background:var(--sur2);border:1px solid var(--brd);border-radius:var(--r);padding:10px 14px;margin-bottom:14px;align-items:center;gap:10px;flex-wrap:wrap">
+      <span style="font-size:12px;font-weight:700;color:var(--tx2)">Tarih Aralığı:</span>
+      <input type="date" id="rapor-bas-tar" onchange="raporGoster(aktifRapor)" style="height:32px;padding:0 9px;border:1px solid var(--brd);border-radius:var(--rsm);font-size:13px;font-family:inherit;background:var(--sur)">
+      <span style="color:var(--tx3)">—</span>
+      <input type="date" id="rapor-bit-tar" onchange="raporGoster(aktifRapor)" style="height:32px;padding:0 9px;border:1px solid var(--brd);border-radius:var(--rsm);font-size:13px;font-family:inherit;background:var(--sur)">
+      <button class="btn btn-sm" onclick="raporHizliTarih('buay')">Bu Ay</button>
+      <button class="btn btn-sm" onclick="raporHizliTarih('gecenay')">Geçen Ay</button>
+      <button class="btn btn-sm" onclick="raporHizliTarih('ceyrek')">Son 3 Ay</button>
+      <button class="btn btn-sm" onclick="raporHizliTarih('yil')">Bu Yıl</button>
+    </div>
+    <div id="rapor-baslik" style="font-weight:700;font-size:18px;margin-bottom:5px"></div>
     <div id="rapor-alt" style="font-size:12px;color:var(--tx3);margin-bottom:12px"></div>
     <div id="rapor-icerik"></div>
   </div>
@@ -724,9 +736,9 @@ body.dark .rt td{color:var(--tx)}
   </div>
 </div></div>
 
-<div class="ov" id="m-log" style="z-index:8000"><div class="modal" style="max-width:780px">
+<div class="ov" id="m-log" style="z-index:8000"><div class="modal" style="max-width:1100px;width:94vw">
   <div class="mh"><h3>🗂️ İşlem Kayıtları (Log)</h3><button class="mx" onclick="CM('m-log')">&#215;</button></div>
-  <div class="mb" style="max-height:72vh;overflow-y:auto">
+  <div class="mb" style="max-height:80vh;min-height:60vh;overflow-y:auto">
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center">
       <select id="log-filtre" onchange="logRender()" style="height:34px;padding:0 10px;border:1px solid var(--brd);border-radius:var(--rsm);font-size:13px;font-family:inherit;background:var(--sur)">
         <option value="">Tüm İşlemler</option>
@@ -745,9 +757,9 @@ body.dark .rt td{color:var(--tx)}
   <div class="mf"><button class="btn" onclick="CM('m-log')">Kapat</button><button class="btn btn-p" onclick="logExcel()">📊 Excel'e Aktar</button></div>
 </div></div>
 
-<div class="ov" id="m-alim" style="z-index:8000"><div class="modal" style="max-width:820px">
+<div class="ov" id="m-alim" style="z-index:8000"><div class="modal" style="max-width:1000px;width:94vw">
   <div class="mh"><h3>🛒 Malzeme Alım Listesi</h3><button class="mx" onclick="CM('m-alim')">&#215;</button></div>
-  <div class="mb" style="max-height:70vh;overflow-y:auto">
+  <div class="mb" style="max-height:80vh;min-height:58vh;overflow-y:auto">
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:flex-end">
       <div style="flex:1;min-width:160px"><label style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--tx3);display:block;margin-bottom:4px">Hazırlayan</label>
         <input id="alm-eden" placeholder="Ad Soyad" style="width:100%;height:36px;padding:0 11px;border:1px solid var(--brd);border-radius:var(--rsm);font-size:14px;font-family:inherit;outline:none;background:var(--sur)"></div>
@@ -757,6 +769,10 @@ body.dark .rt td{color:var(--tx)}
         <input id="alm-tar" type="date" style="width:100%;height:36px;padding:0 11px;border:1px solid var(--brd);border-radius:var(--rsm);font-size:14px;font-family:inherit;outline:none;background:var(--sur)"></div>
     </div>
 
+    <div style="background:var(--amb-bg);border:1px solid var(--brd);border-radius:var(--r);padding:11px 14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+      <div style="font-size:13px;color:var(--tx2)">⚠️ Tükenen ve kritik seviyedeki ürünleri otomatik listeye ekleyin, almayacaklarınızı silin.</div>
+      <button class="btn btn-p" onclick="alimBitenleriEkle()" style="white-space:nowrap">⚡ Biten/Kritik Ürünleri Ekle</button>
+    </div>
     <div style="background:var(--sur2);border:1px solid var(--brd);border-radius:var(--r);padding:12px;margin-bottom:14px">
       <div style="font-weight:700;font-size:13px;margin-bottom:9px">Malzeme Ekle</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end">
@@ -801,6 +817,37 @@ body.dark .rt td{color:var(--tx)}
       <button class="btn btn-p" onclick="alimPdf()">📄 PDF Oluştur</button>
     </div>
   </div>
+</div></div>
+
+<div class="ov" id="m-toplu" style="z-index:8000"><div class="modal" style="max-width:520px">
+  <div class="mh"><h3>✏️ Toplu Güncelleme</h3><button class="mx" onclick="CM('m-toplu')">&#215;</button></div>
+  <div class="mb">
+    <div id="toplu-say" style="background:var(--sur2);border:1px solid var(--brd);border-radius:var(--r);padding:10px 14px;margin-bottom:14px;font-size:13px"></div>
+    <div style="font-size:12px;color:var(--tx3);margin-bottom:12px">Sadece değiştirmek istediğiniz alanları doldurun. Boş bıraktıklarınız değişmez.</div>
+
+    <div class="f" style="margin-bottom:12px"><label>Dolaba Taşı</label>
+      <select id="tg-dolap"><option value="">— Değiştirme —</option></select></div>
+
+    <div class="f" style="margin-bottom:12px"><label>Kategori Değiştir</label>
+      <select id="tg-kat">
+        <option value="">— Değiştirme —</option>
+        <option>Elektronik</option><option>Ağ & İletişim</option><option>Kablo & Bağlantı</option><option>Araç-Gereç</option><option>Sarf Malzeme</option><option>Güvenlik & KKD</option><option>Kırtasiye</option><option>Temizlik</option><option>Diğer</option>
+      </select></div>
+
+    <div class="f" style="margin-bottom:12px"><label>Durum Tipi Değiştir</label>
+      <select id="tg-durum">
+        <option value="">— Değiştirme —</option>
+        <option value="normal">Yeterli (Otomatik)</option>
+        <option value="kritik">Kritik</option>
+        <option value="tukendi">Tükendi</option>
+        <option value="onemsiz">Önemsiz</option>
+        <option value="sayilmamis">Sayılmamış</option>
+      </select></div>
+
+    <div class="f" style="margin-bottom:12px"><label>Min/Kritik Eşik Değiştir</label>
+      <input type="number" id="tg-min" min="0" placeholder="Boş bırakırsanız değişmez"></div>
+  </div>
+  <div class="mf"><button class="btn" onclick="CM('m-toplu')">Vazgeç</button><button class="btn btn-p" onclick="topluUygula()">Uygula</button></div>
 </div></div>
 
 <!-- KONFIRM -->
@@ -2082,6 +2129,47 @@ function talepPdf(){
   setTimeout(function(){w.print();},400);
 }
 
+/* === TOPLU GÜNCELLEME === */
+function topluGuncelleAc(){
+  if(secilenler.size===0){toast('Önce ürün seçin!');return;}
+  document.getElementById('toplu-say').innerHTML='<b>'+secilenler.size+'</b> ürün seçili. Aşağıdaki değişiklikler hepsine uygulanacak.';
+  /* Dolap listesini doldur */
+  var ds=document.getElementById('tg-dolap');
+  var sorted=db.dolaplar.slice().sort(function(a,b){return (a.sira||0)-(b.sira||0);});
+  ds.innerHTML='<option value="">— Değiştirme —</option>'+sorted.map(function(d){return '<option>'+e(d.ad)+'</option>';}).join('');
+  /* Alanları sıfırla */
+  document.getElementById('tg-kat').value='';
+  document.getElementById('tg-durum').value='';
+  document.getElementById('tg-min').value='';
+  OM('m-toplu');
+}
+function topluUygula(){
+  var dolap=document.getElementById('tg-dolap').value;
+  var kat=document.getElementById('tg-kat').value;
+  var durum=document.getElementById('tg-durum').value;
+  var min=document.getElementById('tg-min').value;
+  if(!dolap&&!kat&&!durum&&min===''){toast('En az bir alan seçin!');return;}
+  var sayac=0;
+  var idler=Array.from(secilenler);
+  idler.forEach(function(id){
+    var u=null; for(var i=0;i<db.urunler.length;i++){if(db.urunler[i].id===id){u=db.urunler[i];break;}}
+    if(!u)return;
+    if(dolap){u.dolap=dolap;u.sira_dolap=nextSiraForDolap(dolap);}
+    if(kat)u.kat=kat;
+    if(durum)u.durum_tip=durum;
+    if(min!=='')u.min=parseInt(min)||0;
+    sbUrunKaydetTek(u.id);
+    sayac++;
+  });
+  try{localStorage.setItem(DB_KEY,JSON.stringify(db));updDBInfo();}catch(e){}
+  sbAyarKaydet();
+  logEkle('urun-duzenle','Toplu güncelleme: '+sayac+' ürün');
+  CM('m-toplu');
+  secimIptal();
+  renderStok();
+  toast('✅ '+sayac+' ürün güncellendi');
+}
+
 /* === MALZEME ALIM LISTESI === */
 var alimListe=[];
 function alimAc(){
@@ -2125,6 +2213,36 @@ function alimEkle(){
   alimRender();
   document.getElementById('alm-ad').focus();
 }
+
+function alimBitenleriEkle(){
+  var eklenen=0, zaten=0;
+  for(var i=0;i<db.urunler.length;i++){
+    var u=db.urunler[i];
+    var d=durum(u);
+    if(d.k==='out'||d.k==='low'){
+      /* Zaten listede mi? */
+      var var2=false;
+      for(var j=0;j<alimListe.length;j++){if(alimListe[j].ad===u.ad||(alimListe[j].urunId&&alimListe[j].urunId===u.id)){var2=true;break;}}
+      if(var2){zaten++;continue;}
+      /* Önerilen miktar: minimum eşiğin 2 katı, yoksa kalanı tamamla, en az 1 */
+      var oneri=u.min>0?(u.min*2-kalan(u)):0;
+      if(oneri<1)oneri=u.min>0?u.min:1;
+      alimListe.push({
+        ad:u.ad+(u.marka?' - '+u.marka:''),
+        mik:oneri,
+        birim:u.birim||'Adet',
+        not:(d.k==='out'?'TÜKENDİ':'Kritik')+' (kalan: '+kalan(u)+')',
+        urunId:u.id
+      });
+      eklenen++;
+    }
+  }
+  alimRender();
+  if(eklenen>0)toast('✅ '+eklenen+' ürün eklendi'+(zaten>0?' ('+zaten+' zaten listede)':''));
+  else if(zaten>0)toast('Tüm biten ürünler zaten listede');
+  else toast('Biten veya kritik ürün yok ✓');
+}
+
 function alimSil(idx){ alimListe.splice(idx,1); alimRender(); }
 function alimTemizle(){
   if(alimListe.length===0)return;
@@ -2218,15 +2336,95 @@ function alimPdf(){
   setTimeout(function(){w.print();},400);
 }
 
+/* === GRAFİKLER (saf SVG) === */
+function cubukGrafik(veri,renk){
+  /* veri: [{ad,deger}] */
+  if(!veri.length)return '<div style="color:var(--tx3);padding:20px;text-align:center">Veri yok</div>';
+  var max=0; veri.forEach(function(d){if(d.deger>max)max=d.deger;});
+  if(max===0)max=1;
+  var gen=Math.max(420,veri.length*64);
+  var h=240, pad=30, bw=Math.min(48,(gen-60)/veri.length-12);
+  var svg='<svg viewBox="0 0 '+gen+' '+(h+50)+'" style="width:100%;max-width:'+gen+'px;height:auto;font-family:inherit">';
+  veri.forEach(function(d,i){
+    var bh=(d.deger/max)*(h-pad);
+    var x=40+i*((gen-60)/veri.length);
+    var y=h-bh;
+    svg+='<rect x="'+x+'" y="'+y+'" width="'+bw+'" height="'+bh+'" rx="4" fill="'+renk+'"/>';
+    svg+='<text x="'+(x+bw/2)+'" y="'+(y-6)+'" text-anchor="middle" font-size="12" font-weight="700" fill="var(--tx)">'+d.deger+'</text>';
+    var ad=d.ad.length>10?d.ad.slice(0,9)+'…':d.ad;
+    svg+='<text x="'+(x+bw/2)+'" y="'+(h+16)+'" text-anchor="middle" font-size="10.5" fill="var(--tx2)" transform="rotate(0 '+(x+bw/2)+' '+(h+16)+')">'+e(ad)+'</text>';
+  });
+  svg+='</svg>';
+  return '<div style="overflow-x:auto;padding:10px 0">'+svg+'</div>';
+}
+function pastaGrafik(veri){
+  /* veri: [{ad,deger,renk}] */
+  if(!veri.length)return '<div style="color:var(--tx3);padding:20px;text-align:center">Veri yok</div>';
+  var toplam=0; veri.forEach(function(d){toplam+=d.deger;});
+  if(toplam===0)return '<div style="color:var(--tx3);padding:20px;text-align:center">Veri yok</div>';
+  var renkler=['#0b7a52','#1255a0','#9a5e08','#b83030','#5e35b1','#0891b2','#c2410c','#4d7c0f','#be185d','#475569'];
+  var cx=120,cy=120,r=100, aci=-Math.PI/2;
+  var svg='<svg viewBox="0 0 460 250" style="width:100%;max-width:460px;height:auto;font-family:inherit">';
+  var lejant='';
+  veri.forEach(function(d,i){
+    var oran=d.deger/toplam;
+    var aci2=aci+oran*Math.PI*2;
+    var x1=cx+r*Math.cos(aci), y1=cy+r*Math.sin(aci);
+    var x2=cx+r*Math.cos(aci2), y2=cy+r*Math.sin(aci2);
+    var buyuk=oran>0.5?1:0;
+    var renk=d.renk||renkler[i%renkler.length];
+    if(oran>0.999){
+      svg+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="'+renk+'"/>';
+    } else {
+      svg+='<path d="M'+cx+','+cy+' L'+x1.toFixed(1)+','+y1.toFixed(1)+' A'+r+','+r+' 0 '+buyuk+',1 '+x2.toFixed(1)+','+y2.toFixed(1)+' Z" fill="'+renk+'"/>';
+    }
+    var yuzde=Math.round(oran*100);
+    var ad=d.ad.length>16?d.ad.slice(0,15)+'…':d.ad;
+    lejant+='<div style="display:flex;align-items:center;gap:7px;font-size:12.5px;margin-bottom:5px"><span style="width:13px;height:13px;border-radius:3px;background:'+renk+';flex-shrink:0"></span><span style="color:var(--tx)">'+e(ad)+'</span><span style="color:var(--tx3);margin-left:auto">'+d.deger+' (%'+yuzde+')</span></div>';
+    aci=aci2;
+  });
+  svg+='</svg>';
+  return '<div style="display:flex;gap:20px;flex-wrap:wrap;align-items:center;padding:10px 0"><div style="flex:0 0 auto">'+svg+'</div><div style="flex:1;min-width:200px">'+lejant+'</div></div>';
+}
+
 /* === RAPORLAR === */
 var aktifRapor='ozet';
 function raporAc(){ OM('m-rapor'); raporGoster('ozet'); }
+
+function raporTarihAralik(){
+  var bt=document.getElementById('rapor-bas-tar').value;
+  var et=document.getElementById('rapor-bit-tar').value;
+  var bas,bit,label;
+  if(bt){bas=new Date(bt+'T00:00:00').getTime();}else{bas=0;}
+  if(et){bit=new Date(et+'T23:59:59').getTime();}else{bit=Date.now();}
+  if(bt&&et)label=new Date(bt).toLocaleDateString('tr-TR')+' - '+new Date(et).toLocaleDateString('tr-TR');
+  else if(bt)label=new Date(bt).toLocaleDateString('tr-TR')+' sonrası';
+  else if(et)label=new Date(et).toLocaleDateString('tr-TR')+' öncesi';
+  else label='Tüm zamanlar';
+  return {bas:bas,bit:bit,label:label};
+}
+function raporHizliTarih(tip){
+  var now=new Date();
+  var bas,bit=new Date();
+  if(tip==='buay'){bas=new Date(now.getFullYear(),now.getMonth(),1);}
+  else if(tip==='gecenay'){bas=new Date(now.getFullYear(),now.getMonth()-1,1);bit=new Date(now.getFullYear(),now.getMonth(),0);}
+  else if(tip==='ceyrek'){bas=new Date(now.getFullYear(),now.getMonth()-3,now.getDate());}
+  else if(tip==='yil'){bas=new Date(now.getFullYear(),0,1);}
+  function fmt(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+  document.getElementById('rapor-bas-tar').value=fmt(bas);
+  document.getElementById('rapor-bit-tar').value=fmt(bit);
+  raporGoster(aktifRapor);
+}
+
 function raporGoster(tip){
   aktifRapor=tip;
   var tabs=document.querySelectorAll('.rapor-tab');
   for(var i=0;i<tabs.length;i++){
     tabs[i].className='btn rapor-tab'+(tabs[i].getAttribute('data-r')===tip?' btn-p':'');
   }
+  /* Tarih seçici sadece dönemsel ve çok kullanılan raporlarında göster */
+  var ts=document.getElementById('rapor-tarih-secici');
+  if(ts)ts.style.display=(tip==='donemsel'||tip==='cokkullanilan')?'flex':'none';
   document.getElementById('rapor-tarih').textContent='Rapor tarihi: '+new Date().toLocaleString('tr-TR');
   var bas=document.getElementById('rapor-baslik');
   var alt=document.getElementById('rapor-alt');
@@ -2244,15 +2442,19 @@ function raporGoster(tip){
     h=raporTablo(liste,['ad','kalan','min','dolap']);
   } else if(tip==='cokkullanilan'){
     bas.textContent='📊 En Çok Kullanılan Ürünler';
-    alt.textContent='Çıkış hareketlerine göre sıralı (toplam çıkan miktar)';
+    var bt=raporTarihAralik();
+    alt.textContent='Çıkış hareketlerine göre sıralı &middot; '+bt.label;
     var say={};
     db.hareketler.forEach(function(hr){
-      if(hr.tip==='cikan'){say[hr.urunId]=(say[hr.urunId]||0)+hr.miktar;}
+      var t=hr.ts||0;
+      if(hr.tip==='cikan' && t>=bt.bas && t<=bt.bit){say[hr.urunId]=(say[hr.urunId]||0)+hr.miktar;}
     });
     var arr=[];
     db.urunler.forEach(function(u){if(say[u.id])arr.push({u:u,toplam:say[u.id]});});
     arr.sort(function(a,b){return b.toplam-a.toplam;});
-    h='<table class="rt"><thead><tr><th>Ürün</th><th>Dolap</th><th style="text-align:right">Toplam Çıkan</th></tr></thead><tbody>';
+var grafVeri=arr.slice(0,10).map(function(x){return {ad:x.u.ad,deger:x.toplam};});
+    h=cubukGrafik(grafVeri,'#1255a0');
+    h+='<table class="rt"><thead><tr><th>Ürün</th><th>Dolap</th><th style="text-align:right">Toplam Çıkan</th></tr></thead><tbody>';
     if(arr.length===0)h+='<tr><td colspan="3" style="text-align:center;color:var(--tx3);padding:20px">Henüz çıkış hareketi yok</td></tr>';
     for(var i=0;i<arr.length;i++){
       h+='<tr><td>'+e(arr[i].u.ad)+'</td><td style="color:var(--tx2)">'+e(arr[i].u.dolap||'—')+'</td><td style="text-align:right;font-weight:700">'+arr[i].toplam+' '+e(arr[i].u.birim||'')+'</td></tr>';
@@ -2263,7 +2465,9 @@ function raporGoster(tip){
     var grup={};
     db.urunler.forEach(function(u){var d=u.dolap||'(Atanmamış)';if(!grup[d])grup[d]={adet:0,toplam:0};grup[d].adet++;grup[d].toplam+=kalan(u);});
     alt.textContent=Object.keys(grup).length+' dolapta toplam '+db.urunler.length+' ürün';
-    h='<table class="rt"><thead><tr><th>Dolap</th><th style="text-align:right">Ürün Çeşidi</th><th style="text-align:right">Toplam Stok</th></tr></thead><tbody>';
+var pastaV=Object.keys(grup).sort().map(function(d){return {ad:d,deger:grup[d].adet};});
+    h=pastaGrafik(pastaV);
+    h+='<table class="rt"><thead><tr><th>Dolap</th><th style="text-align:right">Ürün Çeşidi</th><th style="text-align:right">Toplam Stok</th></tr></thead><tbody>';
     Object.keys(grup).sort().forEach(function(d){
       h+='<tr><td style="font-weight:600">'+e(d)+'</td><td style="text-align:right">'+grup[d].adet+'</td><td style="text-align:right;font-weight:700">'+grup[d].toplam+'</td></tr>';
     });
@@ -2273,10 +2477,39 @@ function raporGoster(tip){
     var grup={};
     db.urunler.forEach(function(u){var k=u.kat||'Diğer';if(!grup[k])grup[k]={adet:0,toplam:0};grup[k].adet++;grup[k].toplam+=kalan(u);});
     alt.textContent=Object.keys(grup).length+' kategori';
-    h='<table class="rt"><thead><tr><th>Kategori</th><th style="text-align:right">Ürün Çeşidi</th><th style="text-align:right">Toplam Stok</th></tr></thead><tbody>';
+var pastaK=Object.keys(grup).sort().map(function(k){return {ad:k,deger:grup[k].adet};});
+    h=pastaGrafik(pastaK);
+    h+='<table class="rt"><thead><tr><th>Kategori</th><th style="text-align:right">Ürün Çeşidi</th><th style="text-align:right">Toplam Stok</th></tr></thead><tbody>';
     Object.keys(grup).sort().forEach(function(k){
       h+='<tr><td style="font-weight:600">'+e(k)+'</td><td style="text-align:right">'+grup[k].adet+'</td><td style="text-align:right;font-weight:700">'+grup[k].toplam+'</td></tr>';
     });
+    h+='</tbody></table>';
+  } else if(tip==='donemsel'){
+    bas.textContent='📅 Dönemsel Hareket Raporu';
+    var bt=raporTarihAralik();
+    alt.textContent=bt.label+' arasındaki stok hareketleri';
+    var hrk=db.hareketler.filter(function(h){var t=h.ts||0;return t>=bt.bas && t<=bt.bit;});
+    var cikan=0,giren=0;
+    var urunSay={};
+    hrk.forEach(function(h){
+      if(h.tip==='cikan'){cikan+=h.miktar;urunSay[h.urunId]=(urunSay[h.urunId]||0)+h.miktar;}
+      else if(h.tip==='giris')giren+=h.miktar;
+    });
+    var arr=[];
+    db.urunler.forEach(function(u){if(urunSay[u.id])arr.push({u:u,t:urunSay[u.id]});});
+    arr.sort(function(a,b){return b.t-a.t;});
+    h='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px">'
+      +ozetKart('Toplam Çıkış',cikan,'var(--red)')
+      +ozetKart('Toplam Giriş',giren,'var(--grn)')
+      +ozetKart('Hareket Sayısı',hrk.length,'var(--blu)')
+      +'</div>';
+    h+='<div style="font-weight:700;font-size:14px;margin-bottom:8px">Bu Dönemde En Çok Çıkan Ürünler</div>';
+    if(arr.length>0)h+=cubukGrafik(arr.slice(0,10).map(function(x){return {ad:x.u.ad,deger:x.t};}),'#0b7a52');
+    h+='<table class="rt"><thead><tr><th>Ürün</th><th>Dolap</th><th style="text-align:right">Çıkan Miktar</th></tr></thead><tbody>';
+    if(arr.length===0)h+='<tr><td colspan="3" style="text-align:center;color:var(--tx3);padding:20px">Bu dönemde çıkış hareketi yok</td></tr>';
+    for(var i=0;i<arr.length;i++){
+      h+='<tr><td>'+e(arr[i].u.ad)+'</td><td style="color:var(--tx2)">'+e(arr[i].u.dolap||'—')+'</td><td style="text-align:right;font-weight:700">'+arr[i].t+' '+e(arr[i].u.birim||'')+'</td></tr>';
+    }
     h+='</tbody></table>';
   } else if(tip==='ozet'){
     bas.textContent='📋 Genel Özet';
@@ -2300,9 +2533,9 @@ function raporGoster(tip){
   ic.innerHTML=h;
 }
 function ozetKart(baslik,deger,renk){
-  return '<div style="background:var(--sur2);border:1px solid var(--brd);border-radius:var(--r);padding:14px 16px">'
-    +'<div style="font-size:12px;color:var(--tx3);margin-bottom:4px">'+baslik+'</div>'
-    +'<div style="font-size:26px;font-weight:800;color:'+renk+'">'+deger+'</div></div>';
+  return '<div style="background:var(--sur2);border:1px solid var(--brd);border-radius:var(--r);padding:20px 22px">'
+    +'<div style="font-size:13px;color:var(--tx3);margin-bottom:6px">'+baslik+'</div>'
+    +'<div style="font-size:34px;font-weight:800;color:'+renk+'">'+deger+'</div></div>';
 }
 function raporTablo(liste,kolonlar){
   var baslik={kod:'Kod',ad:'Ürün Adı',dolap:'Dolap',bolme:'Bölme',kalan:'Kalan',min:'Min Eşik'};
