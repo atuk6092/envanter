@@ -2093,14 +2093,15 @@ function talepAc(){
   talepRender();
   OM('m-talep');
 }
+var talepSeciliId=null;
 function talepStokSec(){
   var id=parseInt(document.getElementById('tlp-sec').value);
+  talepSeciliId=id||null;
   if(!id)return;
   var u=null; for(var i=0;i<db.urunler.length;i++){if(db.urunler[i].id===id){u=db.urunler[i];break;}}
   if(u){
     document.getElementById('tlp-ad').value=u.ad+(u.marka?' - '+u.marka:'');
     var bsel=document.getElementById('tlp-birim');
-    /* birim eşleştir */
     for(var k=0;k<bsel.options.length;k++){if(bsel.options[k].value===u.birim){bsel.selectedIndex=k;break;}}
     document.getElementById('tlp-mik').focus();
   }
@@ -2110,7 +2111,8 @@ function talepEkle(){
   var mik=parseInt(document.getElementById('tlp-mik').value)||1;
   var birim=document.getElementById('tlp-birim').value;
   if(!ad){toast('Malzeme adı girin!');return;}
-  talepListe.push({ad:ad,mik:mik,birim:birim});
+  talepListe.push({ad:ad,mik:mik,birim:birim,stokId:talepSeciliId,durum:'bekliyor'});
+  talepSeciliId=null;
   document.getElementById('tlp-ad').value='';
   document.getElementById('tlp-mik').value='1';
   document.getElementById('tlp-sec').value='';
@@ -2135,15 +2137,40 @@ function talepRender(){
   var h='';
   for(var i=0;i<talepListe.length;i++){
     var t=talepListe[i];
-    h+='<tr>'
+    var karsilandi=(t.durum==='karsilandi');
+    h+='<tr'+(karsilandi?' style="opacity:.55"':'')+'>'
       +'<td style="text-align:center;font-weight:700;color:var(--tx3)">'+(i+1)+'</td>'
-      +'<td style="font-weight:600">'+e(t.ad)+'</td>'
+      +'<td style="font-weight:600">'+e(t.ad)+(karsilandi?' <span style="color:var(--grn);font-size:11px">✓ Çıkışı yapıldı</span>':(t.stokId?'':' <span style="color:var(--tx3);font-size:11px">(stok dışı)</span>'))+'</td>'
       +'<td style="text-align:right;font-weight:700">'+t.mik+'</td>'
       +'<td>'+e(t.birim)+'</td>'
-      +'<td style="text-align:center"><button class="btn btn-sm btn-del" onclick="talepSil('+i+')">Sil</button></td>'
-      +'</tr>';
+      +'<td style="text-align:center;white-space:nowrap">';
+    if(!karsilandi && t.stokId){
+      h+='<button class="btn btn-sm btn-p" onclick="talepCikisYap('+i+')" title="Stoktan çıkışını yap">📤 Çıkışını Yap</button> ';
+    }
+    h+='<button class="btn btn-sm btn-del" onclick="talepSil('+i+')">Sil</button>'
+      +'</td></tr>';
   }
   tb.innerHTML=h;
+}
+function talepCikisYap(idx){
+  var t=talepListe[idx];
+  if(!t||!t.stokId){toast('Bu talep stok ürünüyle bağlı değil');return;}
+  var u=null; for(var i=0;i<db.urunler.length;i++){if(db.urunler[i].id===t.stokId){u=db.urunler[i];break;}}
+  if(!u){toast('Ürün stokta bulunamadı (silinmiş olabilir)');return;}
+  if(kalan(u)<t.mik){toast('⚠️ Stokta yeterli yok! Kalan: '+kalan(u)+' '+(u.birim||''));return;}
+  var eden=document.getElementById('tlp-eden').value.trim()||'';
+  if(!confirm(t.mik+' '+(u.birim||'')+' '+u.ad+' stoktan çıkışı yapılacak'+(eden?' (talep eden: '+eden+')':'')+'. Onaylıyor musunuz?'))return;
+  /* Stok çıkışı + hareket kaydı */
+  u.cikan=(u.cikan||0)+t.mik;
+  var bugun=new Date();var tarStr=bugun.getFullYear()+'-'+String(bugun.getMonth()+1).padStart(2,'0')+'-'+String(bugun.getDate()).padStart(2,'0');
+  db.hareketler.push({id:db.nextHarId++,urunId:u.id,tip:'cikan',miktar:t.mik,tarih:tarStr,aciklama:'Talep listesinden çıkış'+(eden?' - '+eden:''),yapan:eden||(ME?ME.ad:''),ts:Date.now()});
+  t.durum='karsilandi';
+  try{localStorage.setItem(DB_KEY,JSON.stringify(db));updDBInfo();}catch(e){}
+  sbUrunKaydetTek(u.id);sbAyarKaydet();
+  logEkle('hareket','ÇIKIŞ (talepten): '+t.mik+' '+(u.birim||'')+' - '+u.ad+(eden?' → '+eden:''));
+  renderStok();
+  talepRender();
+  toast('✅ Çıkış yapıldı, stoktan düşüldü');
 }
 function talepPdf(){
   if(talepListe.length===0){toast('Listeye en az bir malzeme ekleyin!');return;}
