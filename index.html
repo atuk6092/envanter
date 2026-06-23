@@ -634,23 +634,46 @@ body.dark .rt td{color:var(--tx)}
 <div class="ov" id="m-tanitim" style="z-index:9500"><div class="modal" style="max-width:760px;width:94vw">
   <div class="mh"><h3>ℹ️ Teknik Envanter — Program Tanıtımı</h3><button class="mx" onclick="CM('m-tanitim')">&#215;</button></div>
   <div class="mb" style="font-size:15px;line-height:1.85;max-height:78vh;overflow-y:auto">
-    <p style="margin-bottom:12px"><b>Teknik Envanter</b>, ekibinizin malzeme stoklarını ortak bulut veritabanında takip etmesini sağlar. Tüm kullanıcılar aynı verileri görür; bir kişinin yaptığı değişiklik diğer ekranlara otomatik yansır.</p>
-    <div style="font-weight:700;margin:14px 0 6px">📋 Ürün Listesi</div>
-    <p>Tüm malzemeler dolap sırasına göre listelenir. Arama kutusu, dolap, bölme, kategori ve durum filtreleriyle hızlıca ürün bulursunuz. <b>+ Yeni Ürün</b> ile ekleme, satırdaki butonlarla düzenleme, taşıma ve silme yapılır.</p>
-    <div style="font-weight:700;margin:14px 0 6px">📤 Stok Hareketi</div>
-    <p>Çıkış, giriş veya düzeltme kaydı girersiniz. Stok miktarları otomatik güncellenir. Hareket Geçmişi sayfasından eski kayıtları görebilir, düzenleyebilir veya silebilirsiniz.</p>
-    <div style="font-weight:700;margin:14px 0 6px">🔔 Kritik Stok Uyarısı</div>
-    <p>Ürün eklerken <b>Kritik Eşik</b> (Min) değeri girin. Kalan stok bu değere veya altına düşünce ürün <b>Kritik</b>, sıfıra düşünce <b>Tükendi</b> olarak işaretlenir ve sağ üstteki 🔔 zilde uyarı çıkar. Girişte de otomatik bildirim gelir. Uyarıdaki ürüne tıklayınca listedeki satırına gider.</p>
-    <div style="font-weight:700;margin:14px 0 6px">🔵 Sayılmamış Ürünler</div>
-    <p>Henüz sayımı yapılmamış malzemeler için durum tipini <b>Sayılmamış</b> seçin. Bu ürünler stok uyarılarına dahil edilmez; sayım yapılınca durumu Yeterli (Otomatik) yapmanız yeterli.</p>
-    <div style="font-weight:700;margin:14px 0 6px">🗄 Dolap &amp; Bölme</div>
-    <p>Dolap ekleyebilir, sıralarını sürükleyerek değiştirebilirsiniz. Her ürün bir dolap ve bölmeye atanır.</p>
-    <div style="font-weight:700;margin:14px 0 6px">👥 Kullanıcılar ve Roller</div>
-    <p><b>Yönetici:</b> tam yetki + kullanıcı yönetimi. <b>Teknik:</b> ürün ve hareket işlemleri. <b>İzleyici:</b> sadece görüntüleme. Yöneticiler kullanıcıları düzenleyebilir, pasif yapabilir, şifrelerini sıfırlayabilir. Giriş ekranındaki <b>Kayıt Ol</b> ile yeni kullanıcılar kendileri hesap açabilir.</p>
-    <div style="font-weight:700;margin:14px 0 6px">📊 Excel ve Yedek</div>
-    <p>Sol menüden Excel'e aktarım/içe aktarım ve JSON yedek alma/geri yükleme yapılır. Veriler ayrıca bulutta (Supabase) güvende tutulur.</p>
-    <div style="font-weight:700;margin:14px 0 6px">☁️ Çok Kullanıcılı Çalışma</div>
-    <p>5-6 kişi aynı anda çalışabilir. Her işlem buluta anında kaydedilir ve diğer ekranlar ~1 saniye içinde otomatik güncellenir. 🔄 Yenile butonu ile elle de güncelleyebilirsiniz.</p>
+    <p style="margin-bottom:12px"><b>Teknik Envanter</b>, ekibinizin tüketim malzemesi stoklarını ortak bulut veritabanında takip etmesini sağlar. Tüm kullanıcılar aynı verileri görür; bir kişinin yaptığı değişiklik diğer ekranlara ~1 saniye içinde otomatik yansır. 5-6 kişi aynı anda sorunsuz çalışabilir.</p>
+
+    <div style="font-weight:700;margin:16px 0 6px;color:var(--grn)">📋 Ürün Listesi</div>
+    <p>Tüm malzemeler dolap sırasına göre listelenir. Üstteki arama kutusu ve <b>dolap, bölme, kategori, durum</b> filtreleriyle hızlıca ürün bulursunuz. <b>+ Yeni Ürün</b> ile ekleme; satırdaki butonlarla düzenleme, taşıma ve silme yapılır. Birden çok ürünü seçip <b>Toplu Güncelle</b> ile hepsini birden dolaba taşıyabilir, kategorisini/durumunu değiştirebilirsiniz.</p>
+
+    <div style="font-weight:700;margin:16px 0 6px;color:var(--grn)">📤 Stok Hareketi</div>
+    <p>Çıkış, giriş veya düzeltme kaydı girersiniz; stok miktarları otomatik güncellenir. Hareket Geçmişi sayfasından eski kayıtları görüntüleyebilir, düzenleyebilir veya silebilirsiniz. "Yapan" alanına işlemi yapan kişinin adını yazabilirsiniz.</p>
+
+    <div style="font-weight:700;margin:16px 0 6px;color:var(--grn)">🔔 Kritik Stok Uyarısı</div>
+    <p>Ürün eklerken <b>Kritik Eşik (Min)</b> değeri girin. Kalan stok bu değere veya altına düşünce ürün <b>Kritik</b>, sıfıra düşünce <b>Tükendi</b> olarak işaretlenir; sağ üstteki 🔔 zilde uyarı çıkar ve girişte otomatik bildirim gelir. Uyarıdaki ürüne tıklayınca listedeki satırı yanıp sönerek size gösterilir.</p>
+
+    <div style="font-weight:700;margin:16px 0 6px;color:var(--grn)">🔵 Sayılmamış Ürünler</div>
+    <p>Henüz sayımı yapılmamış malzemeler için durum tipini <b>Sayılmamış</b> seçin. Bu ürünler mavi etiketle gösterilir ve stok uyarılarına dahil edilmez. Sayım yapılınca durumu "Yeterli (Otomatik)" yapmanız yeterli.</p>
+
+    <div style="font-weight:700;margin:16px 0 6px;color:var(--blu)">📝 Malzeme Talep Listesi</div>
+    <p>İhtiyaç duyulan malzemelerin listesini hazırlarsınız. Stoktan seçebilir veya manuel ekleyebilirsiniz. Stoktan seçilen bir malzemenin yanındaki <b>📤 Çıkışını Yap</b> butonuyla, talebi doğrudan stok çıkışına dönüştürebilirsiniz — stoktan otomatik düşer ve hareket kaydı oluşur. Liste PDF (imzalı) ve Excel olarak alınır.</p>
+
+    <div style="font-weight:700;margin:16px 0 6px;color:var(--blu)">🛒 Malzeme Alım Listesi</div>
+    <p>Satın alınacak malzemelerin listesini hazırlarsınız (sıra no, malzeme, miktar, birim, açıklama). <b>⚡ Biten/Kritik Ürünleri Ekle</b> butonuyla tükenen ve kritik seviyedeki ürünler otomatik listeye doldurulur; almayacaklarınızı silip kalan listeyi PDF/Excel olarak kaydedersiniz.</p>
+
+    <div style="font-weight:700;margin:16px 0 6px;color:var(--blu)">🔄 Ödünç / Geçici Verilenler</div>
+    <p>Geri alınmak üzere geçici verilen malzeme/ekipmanları takip edersiniz. Kime verildiği, veriliş ve tahmini iade tarihi kaydedilir. İstenirse stoktan düşülür. Malzeme dönünce <b>✅ İade</b> butonuyla kapatırsınız (stoktan düşülmüşse geri eklenir). İade tarihi geçenler kırmızı uyarıyla gösterilir. "Kişide Olanlar" listesiyle her an kimde ne olduğunu görürsünüz.</p>
+
+    <div style="font-weight:700;margin:16px 0 6px;color:var(--pur)">📈 Raporlar</div>
+    <p>Tükenenler, kritik seviye, en çok kullanılanlar, dolap/kategori dağılımı, dönemsel hareketler ve genel özet raporlarını görürsünüz. <b>Tarih aralığı</b> seçerek (bu ay, geçen ay, son 3 ay, bu yıl) dönemsel analiz yapabilir; raporları <b>grafiklerle</b> (çubuk/pasta) görüntüleyip Excel ve PDF olarak alabilirsiniz.</p>
+
+    <div style="font-weight:700;margin:16px 0 6px;color:var(--pur)">🗄 Dolap &amp; Bölme</div>
+    <p>Dolap ekleyebilir, sıralarını sürükleyerek değiştirebilirsiniz. Her ürün bir dolap ve bölmeye atanır; ürün listesinde dolaba ve bölmeye göre filtreleyebilirsiniz.</p>
+
+    <div style="font-weight:700;margin:16px 0 6px;color:var(--amb)">👥 Kullanıcılar ve Roller</div>
+    <p><b>Yönetici:</b> tam yetki + kullanıcı yönetimi, raporlar, log, yedek ve Excel işlemleri. <b>Teknik:</b> ürün ve hareket işlemleri, listeler. <b>İzleyici:</b> sadece görüntüleme. Yöneticiler kullanıcı ekleyebilir, düzenleyebilir, pasif yapabilir ve şifre sıfırlayabilir. Herkes kendi şifresini değiştirebilir.</p>
+
+    <div style="font-weight:700;margin:16px 0 6px;color:var(--amb)">🗂️ İşlem Kayıtları (Log) &mdash; Yöneticiye Özel</div>
+    <p>Kim ne zaman giriş yaptı, hangi malzemeyi çıkardı/aldı, hangi ürünü ekledi/düzenledi/sildi — tüm işlemler tarih-saat damgasıyla kaydedilir. Filtreleyebilir, arayabilir ve Excel olarak alabilirsiniz.</p>
+
+    <div style="font-weight:700;margin:16px 0 6px;color:var(--amb)">📊 Veri &amp; Yedek &mdash; Yöneticiye Özel</div>
+    <p>Excel'e aktarım/içe aktarım ve <b>şifreli</b> JSON yedek alma/geri yükleme yapılır. Yedek dosyası yöneticinin giriş şifresiyle otomatik şifrelenir; geri yüklerken aynı şifre istenir. Veriler ayrıca bulutta sürekli güvende tutulur.</p>
+
+    <div style="font-weight:700;margin:16px 0 6px;color:var(--tx2)">🌙 Koyu Mod</div>
+    <p>Sağ üstteki 🌙 butonuyla koyu/açık tema arasında geçiş yapabilirsiniz. Tercihiniz hatırlanır.</p>
   </div>
   <div class="mf"><button class="btn btn-p" onclick="CM('m-tanitim')">Kapat</button></div>
 </div></div>
