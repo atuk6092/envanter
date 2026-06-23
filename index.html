@@ -319,16 +319,23 @@ body.dark .rt td{color:var(--tx)}
   <div class="sb-a" onclick="showPage('har')" id="nav-har">🔄 Hareket Geçmişi</div>
   <div class="sb-a" onclick="showPage('dolap')" id="nav-dolap">🗄 Dolap &amp; Bölme</div>
   <div class="sb-a" onclick="showPage('kullanici')" id="nav-ku" style="display:none">👥 Kullanıcılar</div>
-  <div class="sb-sec">Araçlar</div>
+
+  <div class="sb-sec">Listeler &amp; İşlemler</div>
+  <div class="sb-a" onclick="talepAc()">📝 Malzeme Talep Listesi</div>
+  <div class="sb-a" onclick="alimAc()">🛒 Malzeme Alım Listesi</div>
+  <div class="sb-a" onclick="oduncAc()">🔄 Ödünç / Geçici Verilenler</div>
+
+  <div class="sb-sec">Raporlar &amp; Kayıtlar</div>
+  <div class="sb-a" id="menu-rapor" onclick="raporAc()">📈 Raporlar</div>
+  <div class="sb-a" id="menu-log" onclick="logAc()" style="display:none">🗂️ İşlem Kayıtları (Log)</div>
+
+  <div class="sb-sec" id="sec-veri">Veri &amp; Yedek</div>
   <div class="sb-a" id="menu-excel-out" onclick="exportExcel()">📊 Excel'e Aktar</div>
   <div class="sb-a" id="menu-excel-in" onclick="triggerImport()">📥 Excel'den Aktar</div>
   <div class="sb-a" id="menu-yedek" onclick="yedekle()">💾 Yedek Al (JSON)</div>
   <div class="sb-a" id="menu-geriyukle" onclick="geriYukle()">🔁 Yedeği Geri Yükle</div>
-  <div class="sb-a" id="menu-rapor" onclick="raporAc()">📈 Raporlar</div>
-  <div class="sb-a" id="menu-log" onclick="logAc()" style="display:none">🗂️ İşlem Kayıtları (Log)</div>
-  <div class="sb-a" onclick="talepAc()">📝 Malzeme Talep Listesi</div>
-  <div class="sb-a" onclick="alimAc()">🛒 Malzeme Alım Listesi</div>
-  <div class="sb-a" onclick="oduncAc()">🔄 Ödünç / Geçici Verilenler</div>
+
+  <div class="sb-sec">Yardım</div>
   <div class="sb-a" onclick="tanitimAc()">ℹ️ Program Tanıtımı</div>
   <div class="sb-foot" id="db-stat">Yükleniyor...</div>
 </aside>
@@ -1199,7 +1206,7 @@ function uRolUygula(rol){
   else if(rol==='teknik'){if(b)b.style.display='';if(n)n.style.display='none';}
   else{if(b)b.style.display='none';if(n)n.style.display='none';}
   /* Yedek alma/geri yükleme + Excel sadece admin */
-  var sadeceAdmin=['menu-yedek','menu-geriyukle','menu-excel-out','menu-excel-in','menu-log'];
+  var sadeceAdmin=['menu-yedek','menu-geriyukle','menu-excel-out','menu-excel-in','menu-log','sec-veri'];
   for(var ai=0;ai<sadeceAdmin.length;ai++){
     var el=document.getElementById(sadeceAdmin[ai]);
     if(el)el.style.display=(rol==='admin')?'':'none';
