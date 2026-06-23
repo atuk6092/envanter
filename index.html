@@ -1593,20 +1593,19 @@ function updBolmeFiltre(){
   var bf=document.getElementById('flt-b'); if(!bf)return;
   var fd=document.getElementById('flt-d').value;
   var bv=bf.value;
-  var bolmeler=[];
-  if(fd){
-    /* Seçili dolabın bölmeleri */
-    var dl=null; for(var i=0;i<db.dolaplar.length;i++){if(db.dolaplar[i].ad===fd){dl=db.dolaplar[i];break;}}
-    var n=(dl&&dl.bolme)?dl.bolme:5;
-    for(var b=1;b<=n;b++)bolmeler.push(String(b));
-  } else {
-    /* Tüm ürünlerdeki benzersiz bölmeler */
-    var set={};
-    db.urunler.forEach(function(u){if(u.bolme)set[String(u.bolme)]=1;});
-    bolmeler=Object.keys(set).sort(function(a,b){return parseInt(a)-parseInt(b);});
-  }
+  /* Gerçek ürün bölme değerlerinden liste oluştur (seçili dolaba göre filtreli) */
+  var set={};
+  db.urunler.forEach(function(u){
+    if(fd && u.dolap!==fd)return; /* dolap seçiliyse sadece o dolabın bölmeleri */
+    if(u.bolme)set[String(u.bolme)]=1;
+  });
+  var bolmeler=Object.keys(set).sort(function(a,b){
+    var na=parseInt(a),nb=parseInt(b);
+    if(!isNaN(na)&&!isNaN(nb))return na-nb;
+    return a.localeCompare(b,'tr');
+  });
   bf.innerHTML='<option value="">Tüm Bölmeler</option>'+bolmeler.map(function(b){
-    return '<option value="'+b+'"'+(b===bv?' selected':'')+'>Bölme '+b+'</option>';
+    return '<option value="'+b+'"'+(b===bv?' selected':'')+'>'+e(b)+'</option>';
   }).join('');
 }
 
