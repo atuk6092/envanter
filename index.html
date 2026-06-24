@@ -891,12 +891,10 @@ body.dark .rt td{color:var(--tx)}
     <div style="background:var(--sur2);border:1px solid var(--brd);border-radius:var(--r);padding:13px;margin-bottom:14px">
       <div style="font-weight:700;font-size:13px;margin-bottom:10px">➕ Yeni Ödünç Kaydı</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end">
-        <div style="flex:2;min-width:170px"><label style="font-size:11px;color:var(--tx3);display:block;margin-bottom:3px">Stoktan Seç (opsiyonel)</label>
-          <select id="od-sec" onchange="oduncStokSec()" style="width:100%;height:34px;padding:0 9px;border:1px solid var(--brd);border-radius:var(--rsm);font-size:13px;font-family:inherit;background:var(--sur)">
-            <option value="">— Manuel giriş —</option>
-          </select></div>
-        <div style="flex:2;min-width:170px"><label style="font-size:11px;color:var(--tx3);display:block;margin-bottom:3px">Malzeme / Ekipman Adı</label>
-          <input id="od-ad" placeholder="Ör: Test cihazı, kablo tester" style="width:100%;height:34px;padding:0 9px;border:1px solid var(--brd);border-radius:var(--rsm);font-size:13px;font-family:inherit;outline:none;background:var(--sur)"></div>
+        <div style="flex:3;min-width:240px;position:relative"><label style="font-size:11px;color:var(--tx3);display:block;margin-bottom:3px">Malzeme / Ekipman (stoktan ara veya manuel yaz)</label>
+          <input id="od-ad" autocomplete="off" oninput="oduncAra()" onfocus="oduncAra()" placeholder="Yazın: stoktan süzülür, listede yoksa manuel kalır" style="width:100%;height:34px;padding:0 9px;border:1px solid var(--brd);border-radius:var(--rsm);font-size:13px;font-family:inherit;outline:none;background:var(--sur)">
+          <input type="hidden" id="od-sec">
+          <div id="od-oneri" style="display:none;position:absolute;top:60px;left:0;right:0;background:var(--sur);border:1px solid var(--brd);border-radius:var(--rsm);box-shadow:0 8px 28px rgba(0,0,0,.18);z-index:50;max-height:240px;overflow-y:auto"></div></div>
         <div style="width:75px"><label style="font-size:11px;color:var(--tx3);display:block;margin-bottom:3px">Adet</label>
           <input id="od-mik" type="number" min="1" value="1" style="width:100%;height:34px;padding:0 9px;border:1px solid var(--brd);border-radius:var(--rsm);font-size:13px;font-family:inherit;outline:none;background:var(--sur)"></div>
       </div>
@@ -2078,6 +2076,13 @@ function e(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').re
 
 /* Bildirim kutusu disari tiklayinca kapansin */
 document.addEventListener('click',function(ev){
+  /* Ödünç öneri kutusu */
+  var ob=document.getElementById('od-oneri');
+  if(ob&&ob.style.display==='block'){
+    var t2=ev.target;var ic=false;
+    while(t2){if(t2.id==='od-oneri'||t2.id==='od-ad'){ic=true;break;}t2=t2.parentNode;}
+    if(!ic)ob.style.display='none';
+  }
   var box=document.getElementById('bell-box');
   if(!box||box.style.display!=='block')return;
   var t=ev.target;
@@ -2291,24 +2296,42 @@ function topluUygula(){
 var oduncFiltreTip='kiside';
 function oduncAc(){
   if(!db.odunc)db.odunc=[];
-  var sel=document.getElementById('od-sec');
-  var opts='<option value="">— Manuel giriş —</option>';
-  var sirali=db.urunler.slice().sort(function(a,b){return (a.ad||'').localeCompare(b.ad||'','tr');});
-  for(var i=0;i<sirali.length;i++){var u=sirali[i];opts+='<option value="'+u.id+'">'+e(u.ad)+(u.marka?' ('+e(u.marka)+')':'')+'</option>';}
-  sel.innerHTML=opts;
   var d=new Date();var bugun=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
   document.getElementById('od-ver').value=bugun;
   oduncRender();
   OM('m-odunc');
 }
-function oduncStokSec(){
-  var id=parseInt(document.getElementById('od-sec').value);
-  if(!id){document.getElementById('od-stokdus').checked=false;return;}
+function oduncAra(){
+  var q=(document.getElementById('od-ad').value||'').toLowerCase().trim();
+  var box=document.getElementById('od-oneri');
+  /* Kullanıcı yazınca stok bağlantısını sıfırla (manuel kabul et) */
+  document.getElementById('od-sec').value='';
+  document.getElementById('od-stokdus').checked=false;
+  if(!q){box.style.display='none';return;}
+  var bulunan=db.urunler.filter(function(u){
+    var s=(u.ad+' '+(u.marka||'')).toLowerCase();
+    return s.indexOf(q)>=0;
+  }).slice(0,8);
+  if(bulunan.length===0){box.style.display='none';return;}
+  var h='';
+  bulunan.forEach(function(u){
+    var ad=e(u.ad)+(u.marka?' <span style="color:var(--tx3)">- '+e(u.marka)+'</span>':'');
+    var k=kalan(u);
+    h+='<div onclick="oduncOneriSec('+u.id+')" style="padding:9px 12px;cursor:pointer;border-bottom:1px solid var(--brd);display:flex;justify-content:space-between;align-items:center;gap:8px" onmouseover="this.style.background=\'var(--sur2)\'" onmouseout="this.style.background=\'\'">'
+      +'<span style="font-size:13px">'+ad+'</span>'
+      +'<span style="font-size:11px;color:var(--tx3);white-space:nowrap">stok: '+k+' '+e(u.birim||'')+'</span></div>';
+  });
+  box.innerHTML=h;
+  box.style.display='block';
+}
+function oduncOneriSec(id){
   var u=null; for(var i=0;i<db.urunler.length;i++){if(db.urunler[i].id===id){u=db.urunler[i];break;}}
-  if(u){
-    document.getElementById('od-ad').value=u.ad+(u.marka?' - '+u.marka:'');
-    document.getElementById('od-stokdus').checked=true;
-  }
+  if(!u)return;
+  document.getElementById('od-ad').value=u.ad+(u.marka?' - '+u.marka:'');
+  document.getElementById('od-sec').value=id;
+  document.getElementById('od-stokdus').checked=true;
+  document.getElementById('od-oneri').style.display='none';
+  document.getElementById('od-mik').focus();
 }
 function oduncEkle(){
   var ad=document.getElementById('od-ad').value.trim();
